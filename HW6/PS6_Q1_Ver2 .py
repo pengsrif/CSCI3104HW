@@ -2,10 +2,9 @@
 #Zhaozhong Peng
 #2017/3/15 (Version 1)
 #2017/3/17 (Version 2)
-## Function TreeSearchingRouts still need testing(running time is toooooooo long)
-## Also currently if L=10, function will only return monkeys failed, according to 
-## infinity monkey theroy, the probility that monkeys success is too small at about
-## (1/26)^10 for each time (consider the frequency is equal for all alphabet). 
+## Function TreeSearchingRouts still need testing(running time is toooooooo long, but works on x='polynomial' y='exponential'
+## Also currently if L=10, function infinityMonkey will only return monkeys failed, according to infinity monkey theroy, the
+## probility that monkeys success is too small at about (1/26)^10 for each time (consider the frequency is equal for all alphabet). 
 ## But if I change the L to 5 then will get a success signal. XD
 import numpy
 import random
