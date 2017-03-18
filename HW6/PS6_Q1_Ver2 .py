@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#Zhaozhong Peng's Group
+#Zhaozhong Peng , Sibo Song, Yongbo Shu
 #2017/3/15 (Version 1)
 #2017/3/17 (Version 2)
 ## Function TreeSearchingRouts still need testing(running time is toooooooo long, but works on x='polynomial' y='exponential'
