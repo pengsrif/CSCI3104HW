@@ -249,6 +249,7 @@ def infinityMonkey(compairTXT,L):
 #print answer[1]
 #print "Let L=10"
 #print answer[0]
+########################QUESTIONc###################
 #print "Number of best way to change:"
 #print TreeSearchingRouts(S,len(S)-1,len(S[0])-1,0)
 ########################QUESTIONf####################
