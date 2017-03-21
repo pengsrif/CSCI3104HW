@@ -2,6 +2,7 @@
 #Zhaozhong Peng , Sibo Song, Yongbo Shu
 #2017/3/15 (Version 1)
 #2017/3/17 (Version 2)
+#2017/3/21 (Version 3) change whole function to random selet path
 ## Function TreeSearchingRouts still need testing(running time is toooooooo long, but works on x='polynomial' y='exponential'
 ## Also currently if L=10, function infinityMonkey will only return monkeys failed, according to infinity monkey theroy, the
 ## probility that monkeys success is too small at about (1/26)^10 for each time (consider the frequency is equal for all alphabet). 
@@ -51,34 +52,50 @@ def alignStrings(x,y) :  #creat a table with strings and cost
 	
 	
 def determineOptimalOp(A,x,y): #determin the next step
+	options=[]
 	indel=1
 	swap=10
 	sub=1
 	no_op=0
 	if(x==1 and y==1):
-		return [0,0,'start']
+		options.append([0,0,'start'])
+		return options
 	if(x==1):
-		return [x,y-1,'Delete a string in x']
+		options.append([x,y-1,'Delete a string in x'])
+		return options
 	if(y==1):
-		return [x-1,y,'Delete a string in y']
+		options.append( [x-1,y,'Delete a string in y'])
+		return options
 	if(A[0][y]==A[x][0]):
-		return [x-1,y-1,'Not doing anything in this position']
+		options.append([x-1,y-1,'Not doing anything in this position'])
+		return options
 	if(x-2>=1 and y-2>=1):
 		minValue=min(A[x-1][y],A[x][y-1],A[x-2][y-2],A[x-1][y-1])
 		if (minValue==A[x-2][y-2] and minValue+swap==A[x][y]):
-			return [x-2,y-2,'Swap the elements between this position and last position in x,y']
+			options.append([x-2,y-2,'Swap the elements between this position and last position in x,y'])
+			if(minValue==A[x-1][y-1] and minValue+sub==A[x][y]):
+				options.append([x-1,y-1,'Delete both element in this position in x,y'])
+			if(minValue==A[x-1][y] and minValue+indel==A[x][y]):
+				options.append([x-1,y,'Insert a gap in to string x'])
+			if(minValue==A[x][y-1] and minValue+indel==A[x][y]):
+				options.append([x,y-1,'Insert a gap in to string y' ])
+			return options
 		minValue=min(A[x-1][y],A[x][y-1],A[x-1][y-1])
 		if (minValue==A[x-1][y-1] and minValue+sub==A[x][y]):
-			return [x-1,y-1,'Delete both element in this position in x,y']
+			options.append([x-1,y-1,'Delete both element in this position in x,y'])
 		if (minValue==A[x][y-1] and minValue+indel==A[x][y]):
-			return [x,y-1,'Insert a gap in to string y' ]
-		return [x-1,y,'Insert a gap in to string x']
+			options.append([x,y-1,'Insert a gap in to string y' ])
+		if(minValue==A[x-1][y] and minValue+indel==A[x][y]):
+			options.append([x-1,y,'Insert a gap in to string x'])
+		return options
 	minValue=min(A[x-1][y],A[x][y-1],A[x-1][y-1])
 	if (minValue==A[x-1][y-1] and minValue+sub==A[x][y]):
-		return [x-1,y-1,'Delete both element in this position in x,y']
-	if (minValue==A[x][y-1] and minValue+indel==A[x][y-1]):
-		return [x,y-1,'Insert a gap in to string y']
-	return [x-1,y,'Insert a gap in to string x']
+		options.append([x-1,y-1,'Delete both element in this position in x,y'])
+	if (minValue==A[x][y-1] and minValue+indel==A[x][y]):
+		options.append([x,y-1,'Insert a gap in to string y' ])
+	if(minValue==A[x-1][y] and minValue+indel==A[x][y]):
+		options.append([x-1,y,'Insert a gap in to string x'])
+	return options
 		
 def extractAlignment(S) : #return how to change the x
 	inverseRoute=[]
@@ -89,13 +106,16 @@ def extractAlignment(S) : #return how to change the x
 	y=len(S[0])-1
 	inverseRoute.append([x,y])
 	while (x>=1 or y>=1):
-		target=determineOptimalOp(S,x,y)
-		inverseOperations.append(target[2])
-		x=target[0]
-		y=target[1]
+		targets=determineOptimalOp(S,x,y)
+		updateIndices=random.randint(0,len(targets)-1)
+		choice=targets[updateIndices]
+		inverseOperations.append(choice[2])
+		x=choice[0]
+		y=choice[1]	
 	for i in range (0,len(inverseOperations)):
 		operations.append(inverseOperations[len(inverseOperations)-1-i])
 	return operations
+
 
 def commonSubstrings(x,L,a):
 	substring=[]
