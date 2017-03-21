@@ -6,7 +6,7 @@
 import numpy
 
 def currentMaxPoint(A,x,y):                                             #x is row y is colum
-	if (x!=len(A)-1 and y!=len(A)-1):                                   #when start point is not on border
+	if (x!=len(A)-1 and y!=len(A)-1 and x!=0 and y!=0 ):                    #when start point is not on border
 		pointMap=[]                                                     #creat a new matrix start with index x,y store the highest point can get
 		rows=len(A)-x
 		colums=len(A)-y
