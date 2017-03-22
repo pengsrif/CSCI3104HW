@@ -3,6 +3,7 @@
 #2017/3/15 (Version 1)
 #2017/3/17 (Version 2)
 #2017/3/21 (Version 3) change whole function to random selet path
+#2017/3/22 (Version 4) Fix bug
 ## Function TreeSearchingRouts still need testing(running time is toooooooo long, but works on x='polynomial' y='exponential'
 ## Also currently if L=10, function infinityMonkey will only return monkeys failed, according to infinity monkey theroy, the
 ## probility that monkeys success is too small at about (1/26)^10 for each time (consider the frequency is equal for all alphabet). 
@@ -52,50 +53,72 @@ def alignStrings(x,y) :  #creat a table with strings and cost
 	
 	
 def determineOptimalOp(A,x,y): #determin the next step
-	options=[]
-	indel=1
-	swap=10
-	sub=1
-	no_op=0
-	if(x==1 and y==1):
-		options.append([0,0,'start'])
-		return options
-	if(x==1):
-		options.append([x,y-1,'Delete a string in x'])
-		return options
-	if(y==1):
-		options.append( [x-1,y,'Delete a string in y'])
-		return options
-	if(A[0][y]==A[x][0]):
-		options.append([x-1,y-1,'Not doing anything in this position'])
-		return options
-	if(x-2>=1 and y-2>=1):
-		minValue=min(A[x-1][y],A[x][y-1],A[x-2][y-2],A[x-1][y-1])
-		if (minValue==A[x-2][y-2] and minValue+swap==A[x][y]):
-			options.append([x-2,y-2,'Swap the elements between this position and last position in x,y'])
-			if(minValue==A[x-1][y-1] and minValue+sub==A[x][y]):
-				options.append([x-1,y-1,'Delete both element in this position in x,y'])
-			if(minValue==A[x-1][y] and minValue+indel==A[x][y]):
-				options.append([x-1,y,'Insert a gap in to string x'])
-			if(minValue==A[x][y-1] and minValue+indel==A[x][y]):
-				options.append([x,y-1,'Insert a gap in to string y' ])
-			return options
-		minValue=min(A[x-1][y],A[x][y-1],A[x-1][y-1])
-		if (minValue==A[x-1][y-1] and minValue+sub==A[x][y]):
-			options.append([x-1,y-1,'Delete both element in this position in x,y'])
-		if (minValue==A[x][y-1] and minValue+indel==A[x][y]):
-			options.append([x,y-1,'Insert a gap in to string y' ])
-		if(minValue==A[x-1][y] and minValue+indel==A[x][y]):
-			options.append([x-1,y,'Insert a gap in to string x'])
-		return options
-	minValue=min(A[x-1][y],A[x][y-1],A[x-1][y-1])
-	if (minValue==A[x-1][y-1] and minValue+sub==A[x][y]):
-		options.append([x-1,y-1,'Delete both element in this position in x,y'])
-	if (minValue==A[x][y-1] and minValue+indel==A[x][y]):
-		options.append([x,y-1,'Insert a gap in to string y' ])
-	if(minValue==A[x-1][y] and minValue+indel==A[x][y]):
-		options.append([x-1,y,'Insert a gap in to string x'])
-	return options
+        options=[]
+        indel=1
+        swap=10
+        sub=10
+        no_op=0
+        if(x==1 and y==1):
+            options.append([0,0,'start'])
+            return options
+        if(x==1):
+            options.append([x,y-1,'Delete a string in x'])
+            return options
+        if(y==1):
+            options.append( [x-1,y,'Delete a string in y'])
+            return options
+        if(A[0][y]==A[x][0]):
+            options.append([x-1,y-1,'Not doing anything in this position'])
+            return options
+        if(x-2>=1 and y-2>=1):
+            minValue=min(A[x-1][y],A[x][y-1],A[x-2][y-2],A[x-1][y-1])
+            if (minValue==A[x-2][y-2] and minValue+swap==A[x][y]):
+                options.append([x-2,y-2,'Swap the elements between this 
+                position and last position in x,y'])
+                if(minValue==A[x-1][y-1] and minValue+sub==A[x][y]):
+                    options.append([x-1,y-1,'Delete both element in this 
+                    position in x,y'])
+                    if(minValue==A[x-1][y] and minValue+indel==A[x][y]):
+                        options.append([x-1,y,'Insert a gap in to string x'])
+                    if(minValue==A[x][y-1] and minValue+indel==A[x][y]):
+                        options.append([x,y-1,'Insert a gap in to string y'])
+                    return options
+                minValue==min(A[x-1][y],A[x][y-1])
+                if(minValue==A[x-1][y] and minValue+indel==A[x][y]):
+                    options.append([x-1,y,'Insert a gap in to string x'])
+                if(minValue==A[x][y-1] and minValue+indel==A[x][y]):
+                    options.append([x,y-1,'Insert a gap in to string y'])
+                return options
+            minValue=min(A[x-1][y],A[x][y-1],A[x-1][y-1])
+            if (minValue==A[x-1][y-1] and minValue+sub==A[x][y]):
+                options.append([x-1,y-1,'Delete both element in this 
+                position in x,y'])
+                if (minValue==A[x][y-1] and minValue+indel==A[x][y]):
+                    options.append([x,y-1,'Insert a gap in to string y'])
+                if (minValue==A[x-1][y] and minValue+indel==A[x][y]):
+                    options.append([x-1,y,'Insert a gap in to string x'])
+                return options
+            minValue=min(A[x-1][y],A[x][y-1])
+            if(minValue==A[x-1][y] and minValue+indel==A[x][y]):
+                options.append([x-1,y,'Insert a gap in to string x'])
+            if(minValue==A[x][y-1] and minValue+indel==A[x][y]):
+                options.append([x,y-1,'Insert a gap in to string y'])
+            return options
+    minValue=min(A[x-1][y],A[x][y-1],A[x-1][y-1])
+    if (minValue==A[x-1][y-1] and minValue+sub==A[x][y]):
+        options.append([x-1,y-1,'Delete both element in this 
+        position in x,y'])
+        if (minValue==A[x][y-1] and minValue+indel==A[x][y]):
+            options.append([x,y-1,'Insert a gap in to string y'])
+        if(minValue==A[x-1][y] and minValue+indel==A[x][y]):
+            options.append([x-1,y,'Insert a gap in to string x'])
+        return options
+    minValue=min(A[x-1][y],A[x][y-1])
+    if(minValue==A[x-1][y] and minValue+indel==A[x][y]):
+        options.append([x-1,y,'Insert a gap in to string x'])
+    if(minValue==A[x][y-1] and minValue+indel==A[x][y]):
+        options.append([x,y-1,'Insert a gap in to string y' ])
+    return options
 		
 def extractAlignment(S) : #return how to change the x
 	inverseRoute=[]
@@ -118,39 +141,56 @@ def extractAlignment(S) : #return how to change the x
 
 
 def commonSubstrings(x,L,a):
-	substring=[]
-	x=list(x)
-	counter=0
-	string=''
-	for i in range (0,len(a)):
-		if(a[i]=='Delete a string in x' or a[i]=='Insert a gap in to string y' ):
-			del x[i-1]
-			x.insert(i-1,'-')
-			if(counter>=L):
-				substring.append(string)
-			counter=0
-			string=''
-		if(a[i]=='Delete a string in y' or a[i]=='Insert a gap in to string x'):
-			x.insert(i-1,'-')
-			if(counter>=L):
-				substring.append(string)
-			counter=0
-			string=''
-		if(a[i]=='Not doing anything in this position'):
-			counter=counter+1
-			string=string+x[i-1]
-			if(i==len(a)-1 and counter>=L):
-				substring.append(string)			
-		if(a[i]=='Delete both element in this position in x,y'):
-			del x[i-1]
-			x.insert(i-1,'-')
-			if(counter>=L):
-				substring.append(string)
-			counter=0
-			string=''
-	x=''.join(x) 
-	return substring,x 
-
+        substring=[]
+        x=list(x)
+        string=''
+        indexOfx=0
+        swaped=False
+        for i in range (1,len(a)):
+            if(a[i]=='Swap the elements between this position and next position in x'):
+                tmp=x[indexOfx+1]
+                x[indexOfx+1]=x[indexOfx]
+                x[indexOfx]=tmp
+                string=''
+                swaped=True	
+                indexOfx=indexOfx+1
+            if(a[i]=='Delete a string in x'):
+                del x[indexOfx]
+                x.insert(indexOfx,'-')
+                if(len(string)>=L):
+                    substring.append(string)
+                string=''
+                swaped=False
+                indexOfx=indexOfx+1
+            if(a[i]=='Insert a gap in to string x'):  
+                x.insert(indexOfx,'-')
+                if(len(string)>=L):
+                    substring.append(string)
+                string=''
+                swaped=False
+                indexOfx=indexOfx+1
+            if(a[i]=='Insert a gap in to string y'):
+                del x[indexOfx]
+                if(len(string)>=L):
+                    substring.append(string)
+                swaped=False
+                string=''
+            if(a[i]=='Not doing anything in this position'):
+                if(swaped==False):
+                    string=string+x[indexOfx]		
+                indexOfx=indexOfx+1
+            if(a[i]=='Delete both element in this position in x,y'):
+                del x[indexOfx]
+                x.insert(indexOfx,'-')
+                if(len(string)>=L):
+                    substring.append(string)
+                swaped=False
+                string=''
+                indexOfx=indexOfx+1
+        if(len(string)>=L):
+            substring.append(string)
+        x=''.join(x)
+        return substring,x  ###important, don't print the list directly, use for loop to print each element
 #####################QUESTION(C)#############################
 def TreeSearchingRouts(A,x,y,routeCount):
 	count=routeCount
