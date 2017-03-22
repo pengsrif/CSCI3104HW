@@ -73,11 +73,9 @@ def determineOptimalOp(A,x,y): #determin the next step
         if(x-2>=1 and y-2>=1):
             minValue=min(A[x-1][y],A[x][y-1],A[x-2][y-2],A[x-1][y-1])
             if (minValue==A[x-2][y-2] and minValue+swap==A[x][y]):
-                options.append([x-2,y-2,'Swap the elements between this 
-                position and last position in x,y'])
+                options.append([x-2,y-2,'Swap the elements between this position and last position in x,y'])
                 if(minValue==A[x-1][y-1] and minValue+sub==A[x][y]):
-                    options.append([x-1,y-1,'Delete both element in this 
-                    position in x,y'])
+                    options.append([x-1,y-1,'Delete both element in this position in x,y'])
                     if(minValue==A[x-1][y] and minValue+indel==A[x][y]):
                         options.append([x-1,y,'Insert a gap in to string x'])
                     if(minValue==A[x][y-1] and minValue+indel==A[x][y]):
@@ -91,8 +89,7 @@ def determineOptimalOp(A,x,y): #determin the next step
                 return options
             minValue=min(A[x-1][y],A[x][y-1],A[x-1][y-1])
             if (minValue==A[x-1][y-1] and minValue+sub==A[x][y]):
-                options.append([x-1,y-1,'Delete both element in this 
-                position in x,y'])
+                options.append([x-1,y-1,'Delete both element in this position in x,y'])
                 if (minValue==A[x][y-1] and minValue+indel==A[x][y]):
                     options.append([x,y-1,'Insert a gap in to string y'])
                 if (minValue==A[x-1][y] and minValue+indel==A[x][y]):
@@ -106,8 +103,7 @@ def determineOptimalOp(A,x,y): #determin the next step
             return options
     minValue=min(A[x-1][y],A[x][y-1],A[x-1][y-1])
     if (minValue==A[x-1][y-1] and minValue+sub==A[x][y]):
-        options.append([x-1,y-1,'Delete both element in this 
-        position in x,y'])
+        options.append([x-1,y-1,'Delete both element in this position in x,y'])
         if (minValue==A[x][y-1] and minValue+indel==A[x][y]):
             options.append([x,y-1,'Insert a gap in to string y'])
         if(minValue==A[x-1][y] and minValue+indel==A[x][y]):
